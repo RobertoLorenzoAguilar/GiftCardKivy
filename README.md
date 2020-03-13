@@ -26,9 +26,4 @@ Normal Role:
 usr: normal@email.com
 pwd: normal
 
-Once the dependencies are installed.
-
-ubicar el archivo main.py
-y en consola ejecutar:
-
-python main.py
+run using python main.py
