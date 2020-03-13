@@ -1,0 +1,179 @@
+#:import Window kivy.core.window.Window
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import images_path kivymd.images_path
+
+# FIXME: if you remove the import of this class,
+#        an error is returned when using the `MDMenu` example
+#        NameError: name 'MDDropdownMenu' is not defined
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+
+
+<ContentPopup@BoxLayout>
+    orientation: 'vertical'
+    padding: dp(1)
+    spacing: dp(30)
+
+    Image:
+        id: image
+        source: 'assets/guitar-1139397_1280_crop.png'
+        size_hint: 1, None
+        height: dp(Window.height * 35 // 100)
+        allow_stretch: True
+        keep_ratio: False
+
+    MDRoundFlatButton:
+        text: 'Open Menu'
+        pos_hint: {'center_x': .5}
+        on_release: root.parent.show()
+
+    Widget:
+
+
+<ContentForAnimCard>
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free call"
+            on_press: root.callback(self.text)
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free message"
+            on_press: root.callback(self.text)
+
+        Widget:
+
+    OneLineIconListItem:
+        text: "Video call"
+        on_press: root.callback(self.text)
+
+        IconLeftWidget:
+            icon: 'camera-front-variant'
+
+    TwoLineIconListItem:
+        text: "Call Viber Out"
+        on_press: root.callback(self.text)
+        secondary_text:
+            "[color=%s]Advantageous rates for calls[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
+        # FIXME: Don't work "secondary_text_color" parameter
+        # secondary_text_color: app.theme_cls.primary_color
+
+        IconLeftWidget:
+            icon: 'phone'
+
+    TwoLineIconListItem:
+        text: "Call over mobile network"
+        on_press: root.callback(self.text)
+        secondary_text:
+            "[color=%s]Operator's tariffs apply[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
+
+        IconLeftWidget:
+            icon: 'remote'
+
+
+<MyNavigationDrawerIconButton@NavigationDrawerIconButton>
+    icon: 'checkbox-blank-circle'
+
+
+<ContentNavigationDrawer@MDNavigationDrawer>
+    drawer_logo: './assets/drawer_logo.png'
+    NavigationDrawerSubheader:
+        text: "Menu of Examples:"
+    MyNavigationDrawerIconButton:
+        text: "RobertoLorenzoAguilarith@gmail.com" 
+
+NavigationLayout:
+    id: nav_layout
+
+    ContentNavigationDrawer:
+        id: nav_drawer
+
+    FloatLayout:
+        id: float_box
+
+        BoxLayout:
+            id: box_for_manager
+            orientation: 'vertical'
+
+            MDToolbar:
+                id: toolbar
+                title: app.title
+                md_bg_color: app.theme_cls.primary_color
+                background_palette: 'Primary'
+                background_hue: '500'
+                elevation: 10
+                left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
+                right_action_items:
+                    [['dots-vertical', lambda x: app.open_context_menu_source_code(toolbar)]] \
+                    if scr_mngr.current != "previous" else []
+
+            ScreenManager:
+                id: scr_mngr
+                transition: NoTransition()
+                # on_current: app.set_source_code_file()
+
+                Screen:
+                    name: 'previous'
+
+                    FloatLayout:
+
+                        Image:
+                            source: f'{images_path}kivy-logo-white-512.png'
+                            opacity: .3
+
+                        ScrollView:
+                            size_hint_y: None
+                            height: Window.height - dp(200)
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+
+                            GridLayout:
+                                size_hint_y: None
+                                height: self.minimum_height
+                                cols: 1
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+    
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    spacing: dp(10)
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint: {'center_x': .5, 'center_y': .5}
+        
+                                    MDLabel:
+                                        text: app.previous_text
+                                        size_hint_y: None
+                                        height: self.texture_size[1]
+                                        font_style: 'Subtitle1'
+                                        theme_text_color: 'Primary'
+                                        markup: True
+                                        halign: 'center'
+                                        text_size: self.width - 20, None
+        
+                                    MDRaisedButton:
+                                        text: 'Click Me'
+                                        pos_hint: {'center_x': .5}
+                                        on_release: app.open_menu_for_demo_apps(self)
+
+                                    MDLabel:
+                                        text: app.previous_text_end
+                                        size_hint_y: None
+                                        height: self.texture_size[1]
+                                        font_style: 'Subtitle1'
+                                        theme_text_color: 'Primary'
+                                        markup: True
+                                        halign: 'center'
+                                        text_size: self.width - 20, None
