@@ -1,14 +1,14 @@
 # GiftCardKivy
-GiftShop kivy python 3, se utilizo la coleccion de widgets KivyMD 
+Kivy python 3 gift shop, use KivyMD widget collection
 
-#aplicacion de tienda de regalos 
+#app store app
 
-dependencias:
-*python 3
-*kivy 
-*SqlArchemy
+dependencies:
+* python 3
+* kivy
+* SqlArchemy
 
-Si usa Anaconda, simplemente puede instalar  usando:
+If you use Anaconda, you can simply install using:
 
 kiby:
 conda install kivy -c conda-forge
@@ -16,17 +16,17 @@ conda install kivy -c conda-forge
 SqlAlchemy:
 conda install -c anaconda sqlalchemy
 
-credenciales de logueo:
+Login credentials:
 
-  Rol Admin:
-  usr: admin@email.com
-  pwd: root
+Admin role:
+usr: admin@email.com
+pwd: root
 
-  Rol Normal:
-  usr: normal@email.com
-  pwd: normal
+Normal Role:
+usr: normal@email.com
+pwd: normal
 
-Una vez instaladas las dependencias.
+Once the dependencies are installed.
 
 ubicar el archivo main.py
 y en consola ejecutar:
