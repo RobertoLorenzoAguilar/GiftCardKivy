@@ -9,6 +9,8 @@ from sqlalchemy.ext.declarative import declarative_base
 # Model.metadata.create_all(engine)
 
 engine = create_engine('sqlite:///dbORM2.sqlite', echo=True)
+
+Model.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -85,7 +87,8 @@ class DataBase:
     
     #12/03/20 trae los articulos del carrito
     def getGiftCat(self, idUsuarioSesion):
-        return session.query(ProductUser).filter(ProductUser.user_id == idUsuarioSesion).all()
+        var = session.query(ProductUser).filter(ProductUser.user_id == idUsuarioSesion).all()
+        return var
 
     #12/03/20 trae los articulos del carrito
     def deleteGiftCard(self, idProd):
@@ -108,7 +111,30 @@ class DataBase:
         session.add(newproductuser)
         session.commit()
         return True
+    
+    # saveUsr        
+    def saveUsr(self,objUsuario):
+        session.add(objUsuario)
+        session.commit()
+        return True
 
+        # saveUsr        
+    def searchProduct(self,data, take, page):
+        # var = session.query(Product).filter(Product.name.like(data+'%')).limit(take).all()
+        take= float(take)
+        records= None
+        if page==0:
+            records = session.query(Product).filter(Product.name.like(data+'%')).limit(take).offset(0).all()
+        else:
+            records = session.query(Product).filter(Product.name.like(data+'%')).limit(take).offset(page*take).all()
+        # var = session.query(Product).filter(Product.name.like(data+'%')).limit(take).all()
+        return records
+    
+    # saveUsr        
+    def filtrado(self,take):
+        var = session.query(Product).limit(take).all()
+        return var
+    
     @staticmethod
     def get_date():
         return str(datetime.datetime.now()).split(" ")[0]
