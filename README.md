@@ -29,5 +29,5 @@ pwd: normal
 run using python main.py
 
 
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://user-images.githubusercontent.com/48602725/76888873-e4434c00-6841-11ea-8d9b-6b61beccbd76.PNG)
 
