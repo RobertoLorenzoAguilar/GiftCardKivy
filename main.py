@@ -78,77 +78,6 @@ main_widget_kv = """
     padding: dp(1)
     spacing: dp(30)
 
-    Image:
-        id: image
-        source: 'assets/guitar-1139397_1280_crop.png'
-        size_hint: 1, None
-        height: dp(Window.height * 35 // 100)
-        allow_stretch: True
-        keep_ratio: False
-
-    MDRoundFlatButton:
-        text: 'Open Menu'
-        pos_hint: {'center_x': .5}
-        on_release: root.parent.show()
-
-    Widget:
-
-
-<ContentForAnimCard>
-    orientation: 'vertical'
-    padding: dp(10)
-    spacing: dp(10)
-    size_hint_y: None
-    height: self.minimum_height
-
-    BoxLayout:
-        size_hint_y: None
-        height: self.minimum_height
-
-        Widget:
-
-        MDRoundFlatButton:
-            text: "Free call"
-            on_press: root.callback(self.text)
-
-        Widget:
-
-        MDRoundFlatButton:
-            text: "Free message"
-            on_press: root.callback(self.text)
-
-        Widget:
-
-    OneLineIconListItem:
-        text: "Video call"
-        on_press: root.callback(self.text)
-
-        IconLeftWidget:
-            icon: 'camera-front-variant'
-
-    TwoLineIconListItem:
-        text: "Call Viber Out"
-        on_press: root.callback(self.text)
-        secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
-            % get_hex_from_color(app.theme_cls.primary_color)
-        # FIXME: Don't work "secondary_text_color" parameter
-        # secondary_text_color: app.theme_cls.primary_color
-
-        IconLeftWidget:
-            icon: 'phone'
-
-    TwoLineIconListItem:
-        text: "Call over mobile network"
-        on_press: root.callback(self.text)
-        secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
-            % get_hex_from_color(app.theme_cls.primary_color)
-
-        IconLeftWidget:
-            icon: 'remote'
-
-
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
 
@@ -249,7 +178,7 @@ class KitchenSink(App, Screens):
     #variables globarl
     db = DataBase()
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = "BlueGray"
+    theme_cls.primary_palette = "Indigo"
     theme_cls.accent_palette = "Gray"
     previous_date = ObjectProperty()
     title = "GiftCard"
@@ -320,40 +249,6 @@ class KitchenSink(App, Screens):
         ]
         self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)
-        crop_image(
-            (Window.width, int(dp(Window.height * 35 // 100))),
-            f"{demos_assets_path}guitar-1139397_1280.png",
-            f"{demos_assets_path}guitar-1139397_1280_crop.png",
-        )
-
-    def set_list_for_refresh_layout(self):
-        async def set_list_for_refresh_layout():
-            names_icons_list = list(md_icons.keys())[self.x : self.y]
-            for name_icon in names_icons_list:
-                await asynckivy.sleep(0)
-                self.data["Refresh Layout"]["object"].ids.box.add_widget(
-                    ItemForListRefreshLayout(icon=name_icon, text=name_icon)
-                )
-            self.data["Refresh Layout"][
-                "object"
-            ].ids.refresh_layout.refresh_done()
-
-        asynckivy.start(set_list_for_refresh_layout())
-
-
-        """A method that updates the state of your application
-        while the spinner remains on the screen."""
-
-        def refresh_callback(interval):
-            self.data["Refresh Layout"]["object"].ids.box.clear_widgets()
-            if self.x == 0:
-                self.x, self.y = 25, 50
-            else:
-                self.x, self.y = 0, 25
-            self.set_list_for_refresh_layout()
-            self.tick = 0
-
-        Clock.schedule_once(refresh_callback, 1)
 
     def build_tabs(self):
         for name_tab in self.list_name_icons:
@@ -791,7 +686,6 @@ class KitchenSink(App, Screens):
             # self.long_dialog.title= name
         self.long_dialog.open()
         pass
-    #metodo para agregar al usuario 13/03/20
     def saveUser(self, instance):
         tipo = instance
         if tipo== '':
@@ -858,6 +752,7 @@ class KitchenSink(App, Screens):
             self.db.saveProduct(newproduct,idProdEdit)
             self.clearEdit(self)
             self.set_list_product()
+            self.SearchProduct('', self.filterByPage, self.contadorPag)
     def clearEdit(self, instance): 
         idProdEdit = App.get_running_app().main_widget.ids.scr_mngr.get_screen("shop window").ids["adminproduct_screen"].idProd = "0"
         # self.carritoComprasActual()
@@ -906,8 +801,80 @@ class KitchenSink(App, Screens):
                         "price":  str(val.price)
                     }
                 )
-#endRegion Funcionalidad
-
+    def incrementContadorPag(self):
+        if self.filterByPage==0:
+            self.filterByPage=2
+        self.contadorPag= (self.contadorPag+1)
+        self.SearchProduct('', self.filterByPage, self.contadorPag)
+    def decrementContadorPag(self):
+        if self.filterByPage==0:
+            self.filterByPage=2
+        self.contadorPag= (self.contadorPag-1)
+        self.SearchProduct('', self.filterByPage, self.contadorPag)
+        # toast(str(self.contadorPago))
+    contadorPag= 0
+    def SearchProduct(self, instance, take, contadorPage):
+        # valores seteados
+        # on_text: app.SearchProduct(self.text,2,0)#seteado filtro
+        # self.filterByPage=take
+        data =self.db.searchProduct(instance, take, contadorPage)
+        # elimina vista actual
+        
+        valor = len(App.get_running_app().main_widget.ids.scr_mngr.get_screen("shop window").ids.rv_main.data)
+        for i in range(valor):
+            App.get_running_app().main_widget.ids.scr_mngr.get_screen("shop window").ids.rv_main.data.pop()
+        #agrega text busqueda  
+        App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+                "shop window"
+            ).ids.rv_main.data.append(
+                {
+                    "viewclass": "CardsBoxForShopWindowSearch",
+                    "text": 'kiubo'
+                }
+            ) 
+        #agrega valores encontrados 
+        for i, val in enumerate(data): 
+            App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+                "shop window"
+            ).ids.rv_main.data.append(
+                {
+                    "viewclass": "CardsBoxForShopWindow",
+                    "height": dp(300),
+                    'name': val.name,
+                    "product_image": val.img,
+                    'idProd1':str(val.id)
+             
+                }
+            )
+        App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+            "shop window"
+        ).ids.rv_main.data.append(
+            {
+                "viewclass": "CardsBoxForShopWindowPagNum",
+                "text": 'pago'
+            }
+        )
+        App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+            "shop window"
+        ).ids.rv_main.data.append(
+            {
+                "viewclass": "CardsBoxForShopWindowPag",
+                "text": 'pago'
+            }
+        )
+        App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+            "shop window"
+        ).ids.rv_main.data.append(
+            {
+                "viewclass": "CardsBoxForShopWindowPagSpace",
+            }
+        ) 
+    filterByPage = 0    
+    def filtrado(self, take):
+        self.filterByPage = take
+        self.contadorPag=0
+        self.SearchProduct('', self.filterByPage, self.contadorPag)
+    #endRegion Funcionalidad
 
     text = StringProperty()
     path = StringProperty()
