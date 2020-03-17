@@ -9,8 +9,6 @@ from sqlalchemy.ext.declarative import declarative_base
 # Model.metadata.create_all(engine)
 
 engine = create_engine('sqlite:///dbORM2.sqlite', echo=True)
-
-Model.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -87,8 +85,7 @@ class DataBase:
     
     #12/03/20 trae los articulos del carrito
     def getGiftCat(self, idUsuarioSesion):
-        var = session.query(ProductUser).filter(ProductUser.user_id == idUsuarioSesion).all()
-        return var
+        return session.query(ProductUser).filter(ProductUser.user_id == idUsuarioSesion).all()
 
     #12/03/20 trae los articulos del carrito
     def deleteGiftCard(self, idProd):
@@ -109,12 +106,6 @@ class DataBase:
     def AgregarCarrito(self,idUsuario, idProd):
         newproductuser = ProductUser(user_id=idUsuario, product_id=idProd)
         session.add(newproductuser)
-        session.commit()
-        return True
-    
-    # saveUsr        
-    def saveUsr(self,objUsuario):
-        session.add(objUsuario)
         session.commit()
         return True
 
