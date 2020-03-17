@@ -27,3 +27,7 @@ usr: normal@email.com
 pwd: normal
 
 run using python main.py
+
+
+https://github.com/caimanAguilar/GiftCardKivy/issues/new
+
