@@ -28,6 +28,8 @@ pwd: normal
 
 run using python main.py
 
+Screen's
+
 
 ![alt text](https://user-images.githubusercontent.com/48602725/76888879-e5747900-6841-11ea-95a0-23d557f5aaf8.PNG)
 ![alt text](https://user-images.githubusercontent.com/48602725/76888873-e4434c00-6841-11ea-8d9b-6b61beccbd76.PNG)
