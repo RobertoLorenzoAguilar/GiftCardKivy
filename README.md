@@ -27,7 +27,10 @@ usr: normal@email.com
 pwd: normal
 
 run using python main.py
-<img src="https://user-images.githubusercontent.com/48602725/76888879-e5747900-6841-11ea-95a0-23d557f5aaf8.PNG" alt="alt text" width="50%" height="50%">
+
+
+<h1>Screen's</h1>
+![alt text](https://user-images.githubusercontent.com/48602725/76888879-e5747900-6841-11ea-95a0-23d557f5aaf8.PNG)
 ![alt text](https://user-images.githubusercontent.com/48602725/76888873-e4434c00-6841-11ea-8d9b-6b61beccbd76.PNG)
 ![alt text](https://user-images.githubusercontent.com/48602725/76888880-e5747900-6841-11ea-8cf8-d55619d12c9b.PNG)
 ![alt text](https://user-images.githubusercontent.com/48602725/76888881-e5747900-6841-11ea-9468-0b165a18c73e.PNG)
