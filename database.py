@@ -121,7 +121,9 @@ class DataBase:
         # saveUsr        
     def searchProduct(self,data, take, page):
         # var = session.query(Product).filter(Product.name.like(data+'%')).limit(take).all()
-        take= float(take)
+        if take=='':
+            take=0
+        take= int(take)
         records= None
         if page==0:
             records = session.query(Product).filter(Product.name.like(data+'%')).limit(take).offset(0).all()
