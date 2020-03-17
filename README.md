@@ -29,5 +29,5 @@ pwd: normal
 run using python main.py
 
 
-https://github.com/caimanAguilar/GiftCardKivy/issues/new
+![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
 
