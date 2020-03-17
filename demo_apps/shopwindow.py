@@ -9,7 +9,7 @@ as the Kivy framework.
 
 """
 
-from kivy.app import App
+from kivy.app import App    
 from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
@@ -243,6 +243,77 @@ screen_shop_window = """
         on_release: app.getViewProduct(self)
 
 
+
+
+
+<CardsBoxForShopWindowSearch@BoxLayout>
+    spacing: dp(10)
+    text:''
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        MDIconButton:
+            icon: 'magnify'
+      
+        MDTextField:
+            id:emailUsr
+            size_hint: 1, None
+            height: dp(48)
+            # icon: 'search_field'
+            hint_text: 'Search'
+            on_text: app.SearchProduct(self.text,2,0)#seteado filtro
+
+<CardsBoxForShopWindowPagNum@BoxLayout>
+    spacing: dp(10)
+    text:''
+    BoxLayout:
+        FloatLayout:
+            MDDropDownItem: 
+                id: dropdown_Pag
+                pos_hint: {'center_x': 0.4, 'center_y': 0.6} 
+                items: ["2","4","6"] 
+                dropdown_bg: [1, 1, 1, 1]
+
+            MDFloatingActionButton: 
+                icon: "eye"
+                pos_hint: {'center_x': 0.5, 'center_y': 0.6}  
+                md_bg_color: app.theme_cls.primary_color
+                on_release: app.filtrado(dropdown_Pag.current_item)
+
+
+
+<CardsBoxForShopWindowPag@BoxLayout>      
+    FloatLayout:
+        
+
+        MDRaisedButton:
+            pos_hint: {"center_x": 0.4, "center_y": 0.6}
+            text: "Back"
+            on_release: app.decrementContadorPag()
+        
+        MDRaisedButton:
+            pos_hint: {"center_x": 0.6, "center_y": 0.6}
+            text: "Next"
+            on_release: app.incrementContadorPag()
+
+
+
+
+<CardsBoxForShopWindowPagSpace@BoxLayout>
+    spacing: dp(10)
+    text:''   
+ 
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        padding: dp(10)
+
+
+
+
+
+
 <CardsBoxForShopWindow@BoxLayout>
     spacing: dp(10)
     product_image: ''
@@ -250,14 +321,8 @@ screen_shop_window = """
     previous_dialog: None
     idProd1: ''
     name:''
-
-    # BoxLayout:
-    #         orientation: 'vertical'
-
-   
-
     
-    CardItemForShopWindow:
+    CardItemForShopWindow:        
         icon: root.product_image
         previous_dialog: root.previous_dialog
         idProd1: root.idProd1
@@ -645,32 +710,24 @@ screen_shop_window = """
             icon: 'home-variant'
 
             MainScreen:
-                id:menulogin
-
-            
+                id:menulogin          
 
 
         MDBottomNavigationItem:
             id: view_list
             name: 'view list'
             text: 'Catalog'
-            icon: 'view-list'
+            icon: 'view-list'         
 
-         
+
+        
+            
+
 
             MyRecycleView:
-                id: rv_main
-          
-            # MDLabel:
-            #     theme_text_color: 'Primary'
-            #     font_style: 'Subtitle1'
-            #     # text: '\\n' + 'Casio CVD-12L'
-            #     text: 'gg'
-            #     height: self.texture_size[1]
-            #     size_hint_y: None
-            #     bold: True
-  
-                
+                id: rv_main        
+
+
 
         MDBottomNavigationItem:
             id: cart
@@ -685,7 +742,7 @@ screen_shop_window = """
         MDBottomNavigationItem:
             id: admin
             name: 'admin'
-            text: 'admin Usuarios'
+            text: 'admin Users'
             icon: 'account-circle'
 
             AdminUserScreen:
@@ -707,8 +764,16 @@ screen_shop_window = """
 class ShopWindow(Screen):
     def set_list_shop(self):
         db = DataBase()
-        # queryProductCount= len(db.getProducts())
-        # queryProductCount= len(db.getProducts())
+        # Busu
+        App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+                        "shop window"
+                    ).ids.rv_main.data.append(
+                        {
+                            "viewclass": "CardsBoxForShopWindowSearch",
+                            "text": 'kiubo'
+                        }
+                    )     
+        #producto                    
         for i, val in enumerate(db.getProducts()): 
             App.get_running_app().main_widget.ids.scr_mngr.get_screen(
                 "shop window"
@@ -721,8 +786,16 @@ class ShopWindow(Screen):
                     "previous_dialog": dialog,
                     'idProd1':str(val.id)
                 }
-            )      
-
+            )
+            #paginado     
+            App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+                "shop window"
+            ).ids.rv_main.data.append(
+                {
+                    "viewclass": "CardsBoxForShopWindowPag",
+                    "text": 'pago'
+                }
+            )   
 
         pass
     def get_card(self, instance):
@@ -733,7 +806,6 @@ class ShopWindow(Screen):
     #productos render productos
     def set_list_product(self):
         db = DataBase()
-        # queryProductCount= len(db.getProducts())
         for i, val in enumerate(db.getProducts()): 
             print (i, ",",val)
             App.get_running_app().main_widget.ids.scr_mngr.get_screen("shop window"
