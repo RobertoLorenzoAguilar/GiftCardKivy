@@ -126,9 +126,9 @@ class DataBase:
         take= int(take)
         records= None
         if page==0:
-            records = session.query(Product).filter(Product.name.like(data+'%')).limit(take).offset(0).all()
+            records = session.query(Product).filter(Product.name.like(data+'%')|Product.category.like(data+'%') ).limit(take).offset(0).all()
         else:
-            records = session.query(Product).filter(Product.name.like(data+'%')).limit(take).offset(page*take).all()
+            records = session.query(Product).filter(Product.name.like(data+'%')|Product.category.like(data+'%') ).limit(take).offset(page*take).all()
         # var = session.query(Product).filter(Product.name.like(data+'%')).limit(take).all()
         return records
     
