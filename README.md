@@ -41,41 +41,6 @@ run using python main.py
 ![alt text](https://user-images.githubusercontent.com/48602725/76888877-e4dbe280-6841-11ea-9be7-65e45a800852.PNG)
 
 
-Extas:
-
-If you can create a hybdrig app with python 2 or 3 you can create a independed class with belowe code:
-
-Example to Tkinter appp.
-import platform
-version = platform.python_version_tuple()[0]
-
-if version=='2':
-    import Tkinter as Tkinter
-    import tkFileDialog
-    import tkFont
-    import ttk
-    import tkMessageBox as tkMessageBox
-
-elif version=='3':
-    from tkinter import ttk
-    from tkinter import font as tkFont
-    import tkinter as Tkinter
-    from tkinter import filedialog as tkFileDialog
-    import tkinter.messagebox as tkMessageBox
-
-else:
-    raise "Unable To Import Tkinter Module"
-    exit()
-
-    
-    
-instance here:  
-
-""" LOCAL LIBRARY IMPORTS """
-if __name__=='__main__':
-	from NameModule import Tkinter as tk 
-else:
-	from NameModule import Tkinter as tk 
 
 
 
